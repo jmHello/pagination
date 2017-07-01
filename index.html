@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页插件示例</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="library/jmModule/j_ownCss.css">
+</head>
+<body>
+<div style="margin-bottom: 300px"></div>
+<div jm-Pagination></div>
+</body>
+<script type="text/javascript" src="library/j_ownlibrary.js"></script>
+<script type="text/javascript" src="library/jmModule/j_plugIn.js"></script>
+<script type="text/javascript">
+
+var pag=JM.getEle('[jm-pagination]'),//先获取包含分页插件的容器
+    pagination=new JM.component.Pagination(pag,{});//初始化分页插件的对象
+    //通过点击首页或者上一页等更新页面的数据
+    pagination.updateMsg(function (handleEvent,data) {
+        //通过ajax获取数据，并进行实时更新（即：没点击一次上一页或者下一页等都会通过ajax获取数据）
+//        getData(data,handleEvent);
+    });
+    //初始化分页插件
+    pagination.init();
+
+    //ajax：获取数据
+    function getData(data,handleEvent) {
+        var datas=[];//发送的数据
+          JM.ajax({
+              'method':'POST',
+              //一般分页插件都是通过currentPage（当前页）以及pageSize（每页显示的数据数）向后台拿数据的
+              'url':'xxxxx?currentPage='+data.currentPage+'&pageSize'+data.pageSize,
+              'data':datas,
+              'fn':function (res) {
+                  //响应为tru
+                  if(res.status){
+                      //将数据传输给分页插件中的更新数据的接口，进行数据更新
+                      //res.data是通过ajax拿回来的数据，详细格式一般是（请看下面注释）;
+                      handleEvent(res.data);//这个是分页插件使用的关键
+                  }
+              }
+          })
+    }
+/**
+ * res.data的展示
+ */
+var datas={
+        "status": "true",
+        "data": {
+                "beginPageIndex": 1,//首页
+                "currentPage": 1,//当前页
+                "endPageIndex": 1,//尾页
+                "pageCount": 1,//页面总数
+                "pageSize": 3,//每页显示的数据
+                "recordCount": 2,//数据总数
+                "resultList": []//获取回来的主数据
+        }
+};
+</script>
+</html>
