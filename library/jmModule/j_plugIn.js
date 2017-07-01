@@ -60,6 +60,7 @@
         this.pageSizeBtn=null;//选择每页展示数据数的按钮
         this.cE=new JM.component.CustormEvent();//订阅-分布模式的对象
     };
+    //获取input里的值
     var getIndex=function (eles,input,callback) {
         for(var i=0,len=eles.length;i<len;i++){
             eles[i].onclick=function () {
